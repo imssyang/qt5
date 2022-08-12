@@ -15,11 +15,12 @@ patch -Np1 -i ../qt-everywhere-opensource-src-5.15.5-kf5-1.patch
 
 解决重复引用：
   删除qtbase/src/corelib/thread/thread.pri文件中SOURCES对qmutex_linux.cpp的引用
+  删除qtbase/src/dbus/dbus.pro文件中SOURCES对qdbusmarshaller.cpp的引用
 
-mkdir build && cd build
-
-../configure -prefix /opt/qt5 \
+./configure -prefix /opt/qt5 \
+  -archdatadir /opt/qt5/lib \
   -sysconfdir /opt/qt5/conf \
+  -datadir /opt/qt5/share \
   -confirm-license \
   -opensource \
   -release \
@@ -30,11 +31,12 @@ mkdir build && cd build
   -syslog \
   -skip qtwebengine
 
+  -dbus-linked \
   -opengl desktop \
   -platform linux-g++ \
   -system-sqlite \
-  -dbus-linked \
   -system-harfbuzz \
 
-make
+make -j8
+make install
 
