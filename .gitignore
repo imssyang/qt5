@@ -1,10 +1,5 @@
 archive
 bin
-doc
 include
 lib
-mkspecs
-phrasebooks
-plugins
-qml
-translations
+share
