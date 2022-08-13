@@ -35,6 +35,31 @@ _delete_symlink() {
   fi
 }
 
+_archive_item() {
+  fpath=$1
+  fdir=$(dirname $fpath)
+  fname=$(basename $fpath)
+  if [[ ! -f $HOME/archive/$APP-$fname-$VER.7z ]]; then
+    echo "($APP) archive $fpath"
+    7z a -mx9 -mmt4 $HOME/archive/$APP-$fname-$VER.7z $fpath
+  fi
+}
+
+_unarchive_item() {
+  fpath=$1
+  fdir=$(dirname $fpath)
+  fname=$(basename $fpath)
+  if [[ ! -f $fpath ]] && [[ ! -d $fpath ]]; then
+    echo "($APP) unarchive $HOME/archive/$APP-$fname-$VER.7z -> $fpath"
+    7z x $HOME/archive/$APP-$fname-$VER.7z -o$fdir
+  fi
+}
+
+_large_files=(
+  $HOME/share/doc
+  $HOME/share/examples
+)
+
 init() {
   chown -R root:root $HOME
   chmod 755 $HOME
@@ -55,7 +80,21 @@ install() {
 }
 
 archive() {
-  7z a -mx9 -mmt4 $HOME/archive/qt5-$VER-doc.7z $HOME/share/doc
+  for fpath in "${_large_files[@]}"; do
+    _archive_item $fpath
+  done
+}
+
+unarchive() {
+  for fpath in "${_large_files[@]}"; do
+    _unarchive_item $fpath
+  done
+}
+
+show() {
+  for fpath in "${_large_files[@]}"; do
+    echo $fpath
+  done
 }
 
 case "$1" in
@@ -63,8 +102,10 @@ case "$1" in
   deinit) deinit ;;
   install) install ;;
   archive) archive ;;
+  unarchive) unarchive ;;
+  show) show ;;
   *) SCRIPTNAME="${0##*/}"
-    echo "Usage: $SCRIPTNAME {init|deinit|install|archive}"
+    echo "Usage: $SCRIPTNAME {init|deinit|install|archive|unarchive|show}"
     exit 3
     ;;
 esac

@@ -1,4 +1,5 @@
 
+[qt-everywhere-src-5.15.5]
 # essentials
 apt-get install build-essential libssl-dev python
 
@@ -25,12 +26,12 @@ patch -Np1 -i ../qt-everywhere-opensource-src-5.15.5-kf5-1.patch
   -opensource \
   -release \
   -openssl-linked \
-  -nomake examples \
   -nomake tests \
   -no-rpath \
-  -syslog \
-  -skip qtwebengine
+  -syslog
 
+  -nomake examples \
+  -skip qtwebengine \
   -dbus-linked \
   -opengl desktop \
   -platform linux-g++ \
@@ -42,4 +43,14 @@ make install
 
 make docs
 make install_docs
+
+
+[qt-creator-8.0.1]
+mkdir build && cd build
+cmake -Wno-dev -G Ninja \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INSTALL_PREFIX=/opt/qt5/ide \
+  ..
+cmake --build .
+
 
