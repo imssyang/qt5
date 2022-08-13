@@ -38,8 +38,6 @@ _delete_symlink() {
 init() {
   chown -R root:root $HOME
   chmod 755 $HOME
-
-  7z a -mx9 -mmt4 $HOME/archive/qt5-$VER-doc.7z $HOME/share/doc
 }
 
 deinit() {
@@ -56,12 +54,17 @@ install() {
   cp $HOME/meta/applications/*.desktop /usr/share/applications
 }
 
+archive() {
+  7z a -mx9 -mmt4 $HOME/archive/qt5-$VER-doc.7z $HOME/share/doc
+}
+
 case "$1" in
   init) init ;;
   deinit) deinit ;;
   install) install ;;
+  archive) archive ;;
   *) SCRIPTNAME="${0##*/}"
-    echo "Usage: $SCRIPTNAME {init|deinit|install}"
+    echo "Usage: $SCRIPTNAME {init|deinit|install|archive}"
     exit 3
     ;;
 esac
