@@ -2,6 +2,7 @@
 
 APP=qt5
 HOME=/opt/$APP
+VER=5.15.5
 
 _mkdir() {
   name=$1
@@ -37,6 +38,8 @@ _delete_symlink() {
 init() {
   chown -R root:root $HOME
   chmod 755 $HOME
+
+  7z a -mx9 -mmt4 $HOME/archive/qt5-$VER-doc.7z $HOME/share/doc
 }
 
 deinit() {

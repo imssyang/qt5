@@ -40,3 +40,6 @@ patch -Np1 -i ../qt-everywhere-opensource-src-5.15.5-kf5-1.patch
 make -j8
 make install
 
+make docs
+make install_docs
+
